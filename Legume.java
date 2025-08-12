@@ -1,4 +1,4 @@
-package Novo.ClasseAbstrata.Alimento;
+package ClasseAbstrata;
 
 import java.time.LocalDate;
 
@@ -6,13 +6,14 @@ public class Legume extends Alimento {
     // Atributos
     private String textura;
     private boolean descascado;
-    private String classificacao = classificarValidade(super.getValidade());
 
 //    Construtor
-    public Legume (String textura, boolean descascado, String nome, double custo, LocalDate validade){
+    public Legume (String nome, boolean descascado, double custo, LocalDate validade){
         super(nome, custo, validade);
-        this.textura = textura;
+        this.textura = "Áspera";
         this.descascado = descascado;
+
+        calcularPreco();
     }
 //    Métodos Getters e Setters
     public String getTextura(){
@@ -26,20 +27,34 @@ public class Legume extends Alimento {
     public double calcularPreco() {
         double porcAdicional = 1;
 
-        if (this.classificacao.equals("LONGE")){
+        if (getClassificacao().equals("LONGE")){
             porcAdicional += 0.5;
-        } else if (this.classificacao.equals("MÉDIO")) {
+        } else if (getClassificacao().equals("MÉDIO")) {
             porcAdicional += 0.3;
-        } if (this.textura.equals("FIRME")) {
+        } if (this.textura.equals("Lisa")) {
             porcAdicional += 0.3;
         } if (this.descascado){
             porcAdicional += 0.2;
         }
 
-        return getCusto() * porcAdicional;
+        setCusto(getCusto() * porcAdicional);
+        return getCusto();
     }
 
     public void descascar(){
-        this.descascado = true;
+        if(!this.descascado){
+            this.descascado = true;
+            this.textura = "Lisa";
+
+            setCusto(getCusto() * 1.2);
+        }
+    }
+
+//    ToString
+    @Override
+    public String toString() {
+        return super.toString() +
+                "\nTEXTURA: " + this.textura +
+                "\nDESCASCADO: " + (this.descascado ? "Sim" : "Não");
     }
 }
